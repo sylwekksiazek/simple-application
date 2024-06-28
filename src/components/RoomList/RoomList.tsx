@@ -31,7 +31,7 @@ const RoomList = () => {
 
   const handleBook = (room: IRoom) => {
     console.log(
-      `Booked room: ${room.name} for ${room.price.value} ${room.price.currencyCode}`,
+      `Booked room: ${room.name} for ${room.avail?.price?.value} ${room.avail?.price?.currencyCode}`,
     );
   };
 
