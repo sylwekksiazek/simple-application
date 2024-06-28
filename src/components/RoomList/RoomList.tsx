@@ -20,7 +20,15 @@ const RoomList = () => {
     const avail = await fetchRoomAvail(roomId);
     setRooms((prevRooms) =>
       prevRooms.map((room: IRoom) =>
-        room.id === roomId ? { ...room, avail } : room,
+        room.id === roomId
+          ? {
+              ...room,
+              ...(!room.oldPrice &&
+                avail.price && { oldPrice: { ...room.price } }),
+              ...(avail.price && { price: { ...avail.price } }),
+              availabilityStatus: avail.availabilityStatus,
+            }
+          : room,
       ),
     );
   };
@@ -31,7 +39,7 @@ const RoomList = () => {
 
   const handleBook = (room: IRoom) => {
     console.log(
-      `Booked room: ${room.name} for ${room.avail?.price?.value} ${room.avail?.price?.currencyCode}`,
+      `Booked room: ${room.name} for ${room.price.value} ${room.price.currencyCode}`,
     );
   };
 
@@ -74,7 +82,7 @@ const RoomList = () => {
           variant="outline-primary"
           aria-label="Check all rooms availability"
           onClick={getAllRoomsAvail}
-          disabled={rooms.every((room) => room.avail)}
+          disabled={rooms.every((room) => room.availabilityStatus)}
         >
           Check Availabilities
         </Button>
@@ -96,11 +104,9 @@ const RoomList = () => {
               aria-label="Sort by price"
               onClick={() => handleSort('price')}
             >
-              Initial Price{' '}
-              {orderBy === 'price' ? (order === 'asc' ? '▲' : '▼') : ''}
+              Price {orderBy === 'price' ? (order === 'asc' ? '▲' : '▼') : ''}
             </th>
             <th className="align-middle">Availability</th>
-            <th className="align-middle">New Price</th>
             <th className="align-middle">Price Diff</th>
             <th className="align-middle">Action</th>
           </tr>

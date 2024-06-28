@@ -9,7 +9,8 @@ export interface IRoom {
   id: number;
   name: string;
   price: IPrice;
-  avail?: IRoomAvail;
+  availabilityStatus?: RoomAvailabilityStatus;
+  oldPrice?: IPrice;
 }
 
 export interface IRoomAvail {

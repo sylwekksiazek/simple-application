@@ -25,12 +25,11 @@ const RoomListItem: React.FC<RoomProps> = ({
     <tr>
       <td className="align-middle">{room.name}</td>
       <td className="align-middle">
-        {room.price.value} {room.price.currencyCode}
+        {room.price.value || room.price.value}{' '}
+        {room.price.currencyCode || room.price.currencyCode}
       </td>
       <td className="align-middle">
-        {room.avail ? (
-          room.avail.availabilityStatus
-        ) : (
+        {room.availabilityStatus || (
           <Button
             variant="outline-primary"
             aria-label={`Check availability for ${room.name}`}
@@ -41,10 +40,7 @@ const RoomListItem: React.FC<RoomProps> = ({
         )}
       </td>
       <td className="align-middle">
-        {room.avail?.price?.value} {room.avail?.price?.currencyCode}
-      </td>
-      <td className="align-middle">
-        {room.avail?.price && room.avail.price.value - room.price.value}
+        {room.oldPrice && room.oldPrice.value - room.price.value}
       </td>
       <td className="align-middle d-flex">
         <Button
@@ -52,7 +48,7 @@ const RoomListItem: React.FC<RoomProps> = ({
           aria-label={`Book ${room.name}`}
           onClick={handleBook}
           disabled={
-            room.avail?.availabilityStatus !== RoomAvailabilityStatus.AVAILABLE
+            room.availabilityStatus !== RoomAvailabilityStatus.AVAILABLE
           }
         >
           Book
